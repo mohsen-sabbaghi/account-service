@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to the Account-Service home page.</title>
+    <link th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} " th:rel="stylesheet"/>
+    <link th:href="@{/webjars/font-awesome/6.1.0/css/all.min.css} " th:rel="stylesheet"/>
+    <link th:href="@{/webjars/datatables/1.11.4/css/jquery.dataTables.min.css} " th:rel="stylesheet"/>
+    <link th:href="@{/css/custom_styles.css} " th:rel="stylesheet"/>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <nav aria-label="breadcrumb" class="nav-holder">
+            <ol aria-label="breadcrumb" class="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-home"></i>Home</a></li>
+                <li aria-current="page" class="breadcrumb-item active"><i class="fa-solid fa-money-bill"></i>Accounts
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<hr>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <table class="tabletext-center table-responsive" id="tbl_accounts">
+                <thead>
+                <tr class="align-middle">
+                    <th>Account ID</th>
+                    <th>Account Creation Time</th>
+                    <th>Account Number</th>
+                    <th>Account Balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="align-middle" th:each="account : ${accountsList}">
+                    <td th:text="${account.id}">Account Id</td>
+                    <td th:text="${account.createdTime}">Account createTime</td>
+                    <td th:text="${account.accountNumber}">Account Number</td>
+                    <td th:text="${account.balance}">Account balance</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/datatables/1.11.4/js/jquery.dataTables.min.js}"></script>
+<script src="/js/sweetalert.min.js"></script>
+<script src=" /js/account_scripts.js "></script>
+</body>
+</html>
