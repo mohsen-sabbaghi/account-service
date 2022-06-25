@@ -1,0 +1,64 @@
+version: '2.1'
+services:
+  database:
+    image: mariadb:latest
+    container_name: mariadb-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: accountservicedb
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
+      - ./data.sql:/docker-entrypoint-initdb.d/2-data.sql
+      - /dev/maria/mariadb_data:/var/lib/mysql
+    networks:
+      backend:
+        aliases:
+          - "database"
+    healthcheck:
+      test: "/etc/init.d/mysql status"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  aacount-service:
+    image: 9124402951/aacount-service:v1
+    container_name: aacount-service
+    environment:
+      PROFILE: "prod"
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      backend:
+        aliases:
+          - "aacount-service"
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+      - sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - 9000:9000
+      - 9092:9092
+    networks:
+      backend:
+        aliases:
+          - "sonarqube"
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  sonarqube_logs:
+networks:
+  backend:
+    driver: bridge
