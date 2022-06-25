@@ -37,6 +37,7 @@ services:
       backend:
         aliases:
           - "aacount-service"
+
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
